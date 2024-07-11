@@ -1,6 +1,6 @@
-# vsim -c -do "run -all" tb_top "+UVM_TESTNAME=base_test" 
-# Start time: 12:49:26 on Jul 11,2024
-# ** Note: (vsim-3812) Design is being optimized...
+# vsim -c -do "run -all" tb_top "+UVM_TESTNAME=rgu_test_base" 
+# Start time: 19:03:01 on Jul 11,2024
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
 # //  Questa Sim-64
 # //  Version 10.7c win64 Aug 18 2018
 # //
@@ -16,14 +16,24 @@
 # //  18 U.S.C. Section 1905.
 # //
 # Loading sv_std.std
+# Loading work.apb_monitor_bfm(fast)
+# Loading work.rgu_driver_bfm(fast)
+# Loading mtiUvm.uvm_pkg
+# Loading work.rgu_reg_pkg(fast)
+# Loading work.rgu_agent_pkg(fast)
+# Loading work.apb_agent_pkg(fast)
+# Loading work.rgu_env_pkg(fast)
+# Loading work.rgu_bus_sequence_lib_pkg(fast)
+# Loading work.rgu_test_seq_lib_pkg(fast)
+# Loading work.rgu_test_lib_pkg(fast)
+# Loading work.tb_top_sv_unit(fast)
 # Loading work.tb_top(fast)
-# run -all
-# Hi boss
-# Hi boss
-# Hi boss
-# Hi boss
-# Hi boss
-# ** Note: $finish    : ../tb_top/tb_top.sv(11)
-#    Time: 50 ns  Iteration: 0  Instance: /tb_top
-# End time: 12:49:28 on Jul 11,2024, Elapsed time: 0:00:02
-# Errors: 0, Warnings: 0
+# Loading mtiUvm.questa_uvm_pkg(fast)
+# Loading work.apb_driver_bfm(fast)
+# Loading work.rgu_monitor_bfm(fast)
+# ** Fatal: (vsim-8451) Virtual interface resolution cannot find a matching instance for 'virtual rgu_monitor_bfm'.
+#    Time: 0 ns  Iteration: 0  Region: /rgu_agent_pkg File: ../agents/rgu_agent/rgu_monitor.svh Line: 45
+# FATAL ERROR while loading design
+# Error loading design
+# End time: 19:03:03 on Jul 11,2024, Elapsed time: 0:00:02
+# Errors: 1, Warnings: 0
