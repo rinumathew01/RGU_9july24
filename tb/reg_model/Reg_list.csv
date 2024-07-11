@@ -1,0 +1,67 @@
+Register Name,Register Offset,Register Size,Register Coverage,Field Name,Field Size,Field LSB Position,Field Access,Field Volatile,Field Reset Value,Field Has Reset,Field Is Rand,Field Individually Accessible,Description
+RGU_GLB,0,32,UVM_NO_COVERAGE,,,,,,,,,,System-wide reset control register
+,,,,SW0_RESET,1,0,RW,0,0,1,1,1,System reset (including RGU)
+,,,,SW1_RESET,1,1,RW,0,0,1,1,1,System reset (excluding RGU)
+,,,,SYS_WDT_EN,4,2,RW,0,0,1,1,1,Enable reset from main system's WDTs
+RGU_RST_STATUS,4,32,UVM_NO_COVERAGE,,,,,,,,,,Reset cause register
+,,,,PWRGD,1,0,RO,0,1,1,1,1,Reset was initiated by the sys_pwrgd signal
+,,,,SYS_RESET,1,1,RO,0,0,1,1,1,Reset was initiated by the sys_reset_n signal
+,,,,SB_WDT_RESET,1,2,RO,0,0,1,1,1,Reset was initiated by the SB (SCU) WDT
+,,,,SYS_WDT_RESET,1,3,RO,0,0,1,1,1,Reset was initiated by the main system's system WDT
+,,,,SW0_RESET,1,4,RO,0,0,1,1,1,Reset was initiated by the system-wide software reset 
+,,,,SW1_RESET,1,5,RO,0,0,1,1,1,Reset was initiated by the system-wide software reset 
+RGU_TIMER0,8,32,UVM_NO_COVERAGE,,,,,,,,,,Stage0 timer register
+,,,,TIM0_VAL,32,0,RW,0,400,1,1,1,Stage0 timer value
+RGU_TIMER1,c,32,UVM_NO_COVERAGE,,,,,,,,,,Stage1 timer register
+,,,,TIM1_VAL,32,0,RW,0,400,1,1,1,Stage1 timer value
+RGU_SB_SWRST,10,32,UVM_NO_COVERAGE,,,,,,,,,,SCU software reset register
+,,,,DMAC_SWRST,1,0,RW,0,0,1,1,1,SB (SCU) DMAC software reset
+,,,,QSPI_SWRST,1,1,RW,0,0,1,1,1,SB (SCU) QSPI software reset
+,,,,I2C_SWRST,2,2,RW,0,0,1,1,1,SB (SCU) I2C software reset
+,,,,UART_SWRST,1,4,RW,0,0,1,1,1,SB (SCU) UART software reset
+,,,,GPIO_SWRST,1,5,RW,0,0,1,1,1,SB (SCU) GPIO software reset
+,,,,SRAM_SWRST,1,6,RW,0,0,1,1,1,SB (SCU) SRAM software reset
+RGU_SYS_SWRST,14,32,UVM_NO_COVERAGE,,,,,,,,,,Main system software reset register
+,,,,SYS_SWRST,1,0,RW,0,1,1,1,1,Main system software reset
+RGU_SRAM_SWRST,18,32,UVM_NO_COVERAGE,,,,,,,,,,Main system SRAM software reset register
+,,,,SRAM_SWRST,1,0,RW,0,1,1,1,1,Main system SRAM software reset
+RGU_DDR_SWRST,1c,32,UVM_NO_COVERAGE,,,,,,,,,,Main system DDR software reset register
+,,,,DDR_SWRST,1,0,RW,0,1,1,1,1,Main system DDR software reset
+RGU_USB_SWRST,20,32,UVM_NO_COVERAGE,,,,,,,,,,Main system USB software reset register
+,,,,USB_SWRST,4,0,RW,0,f,1,1,1,Main system USB software reset
+RGU_MMC_SWRST,24,32,UVM_NO_COVERAGE,,,,,,,,,,Main system *MMC software reset register
+,,,,MMC_SWRST,4,0,RW,0,f,1,1,1,Main system *MMC software reset
+RGU_DMAC_SWRST,28,32,UVM_NO_COVERAGE,,,,,,,,,,Main system SDMAC software reset register
+,,,,DMAC_SWRST,1,0,RW,0,1,1,1,1,Main system SDMAC software reset
+RGU_QSPI_SWRST,2c,32,UVM_NO_COVERAGE,,,,,,,,,,Main system QSPI software reset register
+,,,,QSPI_SWRST,2,0,RW,0,3,1,1,1,Main system QSPI software reset
+RGU_SPI_SWRST,30,32,UVM_NO_COVERAGE,,,,,,,,,,Main system SPI software reset
+,,,,SPI_SWRST,6,0,RW,0,3f,1,1,1,Main system SPI software reset
+RGU_I2C_SWRST,34,32,UVM_NO_COVERAGE,,,,,,,,,,Main system I2C software reset register
+,,,,I2C_SWRST,7,0,RW,0,7f,1,1,1,Main system I2C software reset
+RGU_UART_SWRST,38,32,UVM_NO_COVERAGE,,,,,,,,,,Main system UART software reset register
+,,,,UART_SWRST,5,0,RW,0,1f,1,1,1,Main system UART software reset
+RGU_GPIO_SWRST,3c,32,UVM_NO_COVERAGE,,,,,,,,,,Main system GPIO software reset register
+,,,,GPIO_SWRST,2,0,RW,0,3,1,1,1,Main system GPIO software reset
+RGU_I2S_SWRST,40,32,UVM_NO_COVERAGE,,,,,,,,,,Main system I2S software reset register
+,,,,I2S_SWRST,2,0,RW,0,3,1,1,1,Main system TDM I2S software reset
+RGU_GPU_SWRST,44,32,UVM_NO_COVERAGE,,,,,,,,,,Main system GPU software reset register
+,,,,GPU_SWRST,1,0,RW,0,1,1,1,1,Main system GPU software reset
+RGU_VIDEC_SWRST,48,32,UVM_NO_COVERAGE,,,,,,,,,,Main system VIDEC software reset register
+,,,,VIDEC_SWRST,1,0,RW,0,1,1,1,1,Main system VIDEC software reset
+RGU_VICOD_SWRST,4c,32,UVM_NO_COVERAGE,,,,,,,,,,Main system VICOD software reset register
+,,,,VICOD_SWRST,1,0,RW,0,1,1,1,1,Main system VICOD software reset
+RGU_CAMERA_SWRST,50,32,UVM_NO_COVERAGE,,,,,,,,,,Main system CAMERA software reset register
+,,,,CAMERA_SWRST,1,0,RW,0,1,1,1,1,Main system CAMERA software reset
+RGU_DISPLAY_SWRST,54,32,UVM_NO_COVERAGE,,,,,,,,,,Main system DISPLAY software reset
+,,,,DISPLAY_SWRST,2,0,RW,0,3,1,1,1,Main system DISPLAY software reset
+RGU_LLC_SWRST,58,32,UVM_NO_COVERAGE,,,,,,,,,,Main system CPU cluster LLC software reset register
+,,,,LLC_SWRST,1,0,RW,0,1,1,1,1,Main system CPU cluster LLC software reset
+RGU_CPU_SWRST,5c,32,UVM_NO_COVERAGE,,,,,,,,,,Main system CPU cluster software reset register
+,,,,CPU_SWRST,8,0,RW,0,ff,1,1,1,Main system CPU cluster software reset
+RGU_PWM_SWRST,60,32,UVM_NO_COVERAGE,,,,,,,,,,Main system PWM software reset register
+,,,,PWM_SWRST,2,0,RW,0,7,1,1,1,Main system PWM software reset
+RGU_CPU_PWRUP_SWRST,64,32,UVM_NO_COVERAGE,,,,,,,,,,Main system CPU Power-up reset register
+,,,,CPU_PWRUP_SWRST,1,0,RW,0,1,1,1,1,Main system CPU Power-up reset (cluster-wide)
+RGU_CPU_PWRUP_HEAVY_SWRST,68,32,UVM_NO_COVERAGE,,,,,,,,,,Main system CPU Power-up reset register
+,,,,CPU_PWRUP_HEAVY_SWRST,1,0,RW,0,1,1,1,1,Main system CPU Power-up reset (Heavy cores)
