@@ -1,0 +1,32 @@
+`ifndef registers_rgu
+`define registers_rgu
+
+reg [31:0] RGU_GLB;
+reg [31:0] RGU_RST_STATUS;
+reg [31:0] RGU_TIMER0;
+reg [31:0] RGU_TIMER1;
+reg [31:0] RGU_SB_SWRST;
+reg [31:0] RGU_SYS_SWRST;
+reg [31:0] RGU_SRAM_SWRST;
+reg [31:0] RGU_DDR_SWRST;
+reg [31:0] RGU_USB_SWRST;
+reg [31:0] RGU_MMC_SWRST;
+reg [31:0] RGU_DMAC_SWRST;
+reg [31:0] RGU_QSPI_SWRST;
+reg [31:0] RGU_SPI_SWRST;
+reg [31:0] RGU_I2C_SWRST;
+reg [31:0] RGU_UART_SWRST;
+reg [31:0] RGU_GPIO_SWRST;
+reg [31:0] RGU_I2S_SWRST;
+reg [31:0] RGU_GPU_SWRST;
+reg [31:0] RGU_VIDEC_SWRST;
+reg [31:0] RGU_VICOD_SWRST;
+reg [31:0] RGU_CAMERA_SWRST;
+reg [31:0] RGU_DISPLAY_SWRST;
+reg [31:0] RGU_LLC_SWRST;
+reg [31:0] RGU_CPU_SWRST;
+reg [31:0] RGU_PWM_SWRST ;
+reg [31:0] RGU_CPU_PWRUP_SWRST;
+reg [31:0] RGU_CPU_PWRUP_HEAVY_­SWRST;
+
+`endif
