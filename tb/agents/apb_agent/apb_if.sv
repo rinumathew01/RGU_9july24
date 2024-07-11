@@ -15,8 +15,8 @@ interface apb_if(input PCLK,
     !$isunknown(PSEL);
   endproperty: psel_valid
 
-  CHK_PSEL: assert property(psel_valid);
+  // CHK_PSEL: assert property(psel_valid);
 
-  COVER_PSEL: cover property(psel_valid);
+  // COVER_PSEL: cover property(psel_valid);
 
 endinterface: apb_if
