@@ -14,5 +14,6 @@ package rgu_test_lib_pkg;
 
   // Includes:
 `include "rgu_test_base.svh"
+`include "reset_test.svh"
 
 endpackage: rgu_test_lib_pkg

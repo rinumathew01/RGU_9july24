@@ -8,8 +8,7 @@ SEQUENCES ?= ../sequences
 TESTS     ?= ../tests
 
 
-TESTNAME  ?= rgu_test_base
-
+TESTNAME  ?= reset_test
 
 
 all: work build run
@@ -19,11 +18,7 @@ work:
 
 build:
 	cls
-	vlog -incr +incdir+$(RTL) -sv $(RTL)/*.sv
-
-	vlog -incr $(INTERFACE)/rgu_intf.sv
-
-	vlog -incr +incdir+$(TOP) $(TOP)/tb_top.sv
+	#vlog -incr +incdir+$(RTL) -sv $(RTL)/*.sv
 	
 	vlog -incr +incdir+$(AGENTS)/apb_agent $(AGENTS)/apb_agent/apb_agent_pkg.sv
 	vlog -incr $(AGENTS)/apb_agent/apb_if.sv
@@ -44,9 +39,16 @@ build:
 
 	vlog -incr +incdir+$(TESTS) $(TESTS)/rgu_test_lib_pkg.sv
 
+	vlog -incr $(INTERFACE)/rgu_intf.sv
+
+	vlog -incr $(TOP)/tb_top.sv
+
 run:
 	vsim -c -do "run -all" tb_top +UVM_TESTNAME="$(TESTNAME)"
 
+run_wave:
+	vsim tb_top +UVM_TESTNAME="$(TESTNAME)"
+	
+
 clean:
 	rm -rf work vsim.wlf
-

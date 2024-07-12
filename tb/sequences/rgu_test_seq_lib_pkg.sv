@@ -47,6 +47,58 @@ class rgu_vseq_base extends uvm_sequence #(uvm_sequence_item);
 
 endclass: rgu_vseq_base
 
+
+//
+// Register test:
+//
+// Checks the reset values
+// Does a randomized read/write bit test using the front door
+// Repeats the read/write bit test using the back door (not necessary, but as an illustration)
+//
+class register_test_vseq extends rgu_vseq_base;
+
+  `uvm_object_utils(register_test_vseq)
+
+  function new(string name = "register_test_vseq");
+    super.new(name);
+  endfunction
+
+  task body;
+    uvm_reg_hw_reset_seq reg_seq = uvm_reg_hw_reset_seq::type_id::create("reg_seq");
+    reg_seq.model = m_cfg.rgu_rb;
+    
+
+    super.body;
+    `uvm_info(get_type_name(),"REG_SEQUENCE STARTED SANDEEP",UVM_MEDIUM);
+    reg_seq.start(m_sequencer);
+    `uvm_info(get_type_name(),"REG_SEQUENCE ENDED SANDEEP",UVM_MEDIUM);
+  endtask: body
+
+endclass: register_test_vseq
+
+class register_test_one_reg_vseq extends rgu_vseq_base;
+
+  `uvm_object_utils(register_test_one_reg_vseq)
+
+  function new(string name = "register_test_one_reg_vseq");
+    super.new(name);
+  endfunction
+
+  task body;
+    rgu_reset_one_seq reg_seq = rgu_reset_one_seq::type_id::create("reg_seq");
+    // reg_seq.model = m_cfg.rgu_rb;
+    rgu_seq_set_cfg(reg_seq);
+
+    super.body;
+    `uvm_info(get_type_name(),"REG_SEQUENCE STARTED SANDEEP",UVM_MEDIUM);
+    reg_seq.start(m_sequencer);
+    `uvm_info(get_type_name(),"REG_SEQUENCE ENDED SANDEEP",UVM_MEDIUM);
+  endtask: body
+
+endclass: register_test_one_reg_vseq
+
+
+
 /*
 //
 // This virtual sequence does rgu transfers with randomized config
@@ -150,32 +202,5 @@ class config_polling_test extends rgu_vseq_base;
   endtask
 
 endclass: config_polling_test
-
-//
-// Register test:
-//
-// Checks the reset values
-// Does a randomized read/write bit test using the front door
-// Repeats the read/write bit test using the back door (not necessary, but as an illustration)
-//
-class register_test_vseq extends rgu_vseq_base;
-
-  `uvm_object_utils(register_test_vseq)
-
-  function new(string name = "register_test_vseq");
-    super.new(name);
-  endfunction
-
-  task body;
-    uvm_reg_hw_reset_seq reg_seq = uvm_reg_hw_reset_seq::type_id::create("reg_seq");
-    reg_seq.model = m_cfg.rgu_rb;
-
-    super.body;
-    `uvm_info(get_type_name(),"REG_SEQUENCE STARTED SANDEEP",UVM_MEDIUM);
-    reg_seq.start(m_sequencer);
-    `uvm_info(get_type_name(),"REG_SEQUENCE ENDED SANDEEP",UVM_MEDIUM);
-  endtask: body
-
-endclass: register_test_vseq
 */
 endpackage:rgu_test_seq_lib_pkg
