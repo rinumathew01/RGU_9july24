@@ -1,4 +1,11 @@
 module APB_rgu(
+
+    input clk,
+    input sys_pwrgd,
+    input sys_reset_n,
+    input sb_wdt_rst_n,
+    input [3:0] wdt_rst_n,
+
     input PCLK,
     input PRESETn,
     input [11:0] PADDR,
@@ -6,13 +13,42 @@ module APB_rgu(
     input [31:0] PWDATA,
     input PSEL,
     input PENABLE,
+
     output reg [31:0] PRDATA,
     output reg PREADY,
     output reg PSLVERR,
 
-    output reg [11:0] addr,
-    output reg [31:0] data,
-    output reg rw
+    output reg rst_sb_sys_n,
+    output reg rst_sb_dmac_n,
+    output reg rst_sb_qspi_n,
+    output reg rst_sb_i2c_n,
+    output reg rst_sb_uart_n,
+    output reg rst_sb_gpio_n,
+    output reg rst_sb_sram_n,
+    output reg rst_sb_wdt_n,
+    output reg rst_sb_cpu_n,
+    output reg rst_sys_n,
+    output reg rst_wdt_n,
+    output reg rst_gpt_n,
+    output reg rst_sram_n,
+    output reg rst_ddr_n,
+    output reg rst_usb_n,
+    output reg rst_mmc_n,
+    output reg rst_dmac_n,
+    output reg rst_qspi_n,
+    output reg rst_spi_n,
+    output reg rst_i2c_n,
+    output reg rst_uart_n,
+    output reg rst_gpio_n,
+    output reg rst_pwm_n,
+    output reg rst_i2s_n,
+    output reg rst_gpu_n,
+    output reg rst_videc_n,
+    output reg rst_vicod_n,
+    output reg rst_camera_n,
+    output reg rst_display_n,
+    output reg rst_llc_n,
+    output reg rst_cpu_n
 );
 
 
@@ -101,5 +137,86 @@ always_ff @(posedge clk)
                          end 
                 endcase
 
+
+    // if(!sys_pwrgd)
+    //     begin
+    //          rst_sb_sys_n <= 0;
+    //          rst_sb_dmac_n <= 0;
+    //          rst_sb_qspi_n <= 0;
+    //          rst_sb_i2c_n <= 0;
+    //          rst_sb_uart_n <= 0;
+    //          rst_sb_gpio_n <= 0;
+    //          rst_sb_sram_n <= 0;
+    //          rst_sb_wdt_n <= 0;
+    //          rst_sb_cpu_n <= 0;
+    //          rst_sys_n <= 0;
+    //          rst_wdt_n <= 0;
+    //          rst_gpt_n <= 0;
+    //          rst_sram_n <= 0;
+    //          rst_ddr_n <= 0;
+    //          rst_usb_n <= 0;
+    //          rst_mmc_n <= 0;
+    //          rst_dmac_n <= 0;
+    //          rst_qspi_n <= 0;
+    //          rst_spi_n <= 0;
+    //          rst_i2c_n <= 0;
+    //          rst_uart_n <= 0;
+    //          rst_gpio_n <= 0;
+    //          rst_pwm_n <= 0;
+    //          rst_i2s_n <= 0;
+    //          rst_gpu_n <= 0;
+    //          rst_videc_n <= 0;
+    //          rst_vicod_n <= 0;
+    //          rst_camera_n <= 0;
+    //          rst_display_n <= 0;
+    //          rst_llc_n <= 0;
+    //          rst_cpu_n <= 0;
+    //          rst_cpu_pwrup_n <= 0;
+    //          rst_cpu_pwrup_heavy_n <= 0;
+    //     end
+    // else
+    always_ff @(posedge clk)
+        begin
+             rst_sb_sys_n <= stage0_done;
+             rst_sb_dmac_n <= stage0_done & ~SB_DMAC_SWRST;
+             rst_sb_qspi_n <= stage0_done & ~SB_QSPI_SWRST
+             rst_sb_i2c_n <= stage0_done & ~SB_I2C_SWRST;
+             rst_sb_uart_n <= stage0_done & ~SB_UART_SWRST;
+             rst_sb_gpio_n <= stage0_done & ~SB_GPIO_SWRST;
+             rst_sb_sram_n <= stage0_done & ~SB_SRAM_SWRST;
+
+             rst_sb_wdt_n <= stage1_done;
+             rst_sb_cpu_n <= stage1_done;
+
+             rst_sys_n <= stage1_done & ~SYS_SWRST;
+             rst_wdt_n <= {4'{stage1_done & ~SYS_SWRST}};
+             rst_gpt_n <= {8'{stage1_done & ~SYS_SWRST}};
+             rst_sram_n <= stage1_done & ~SRAM_SWRST;
+             rst_ddr_n <= stage1_done & ~DDR_SWRST;
+             rst_usb_n <= stage1_done & ~USB_SWRST;
+             rst_mmc_n <= stage1_done & ~MMC_SWRST;
+             rst_dmac_n <= stage1_done & ~DMAC_SWRST;
+             rst_qspi_n <= stage1_done & ~QSPI_SWRST;
+             rst_spi_n <= stage1_done & ~SPI_SWRST;
+             rst_i2c_n <= stage1_done & ~I2C_SWRST;
+             rst_uart_n <= stage1_done & ~UART_SWRST;
+             rst_gpio_n <= stage1_done & ~GPIO_SWRST;
+             rst_pwm_n <= stage1_done & ~PWM_SWRST;
+             rst_i2s_n <= stage1_done & ~I2S_SWRST;
+             rst_gpu_n <= stage1_done & ~GPU_SWRST;
+             rst_videc_n <= stage1_done & ~VIDEC_SWRST;
+             rst_vicod_n <= stage1_done & ~VICOD_SWRST;
+             rst_camera_n <= stage1_done & ~CAMERA_SWRST;
+             rst_display_n <= stage1_done & ~DISPLAY_SWRST;
+             rst_llc_n <= stage1_done & ~LLC_SWRST;
+             rst_cpu_n <= stage1_done & ~CPU_SWRST;
+             rst_cpu_pwrup_n <= stage1_done & ~CPU_PWRUP_SWRST;
+             rst_cpu_pwrup_heavy_n <= stage1_done & ~CPU_PWRUP_HEAVY_SWRST;
+        end
+
+
+    reg [2:0] count_sys_reset_n;
+
+    always_ff @(posedge clk or negedge sys_pwrgd)
 
 endmodule 
