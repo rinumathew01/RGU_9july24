@@ -43,7 +43,7 @@ module tb_top;
         PRESETn = 0;
         repeat(4) @(posedge PCLK);
         PRESETn = 1;
-        #100 $finish;
+        // #100 $finish;
     end
 
     initial begin

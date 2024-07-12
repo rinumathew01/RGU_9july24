@@ -1,6 +1,6 @@
-# vsim -c -do "run -all" tb_top "+UVM_TESTNAME=reset_test" 
-# Start time: 13:04:56 on Jul 12,2024
-# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# vsim -c -do "run -all" tb_top "+UVM_TESTNAME=reg_rw_test" 
+# Start time: 16:59:08 on Jul 12,2024
+# ** Note: (vsim-8009) Loading existing optimized design _opt
 # //  Questa Sim-64
 # //  Version 10.7c win64 Aug 18 2018
 # //
@@ -57,15 +57,27 @@
 # 
 # UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
 # UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(216) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
-# UVM_INFO @ 0: reporter [RNTST] Running test reset_test...
-# UVM_INFO ../sequences/rgu_test_seq_lib_pkg.sv(93) @ 0: reporter@@t_seq [register_test_one_reg_vseq] REG_SEQUENCE STARTED SANDEEP
-# UVM_INFO ../sequences/rgu_bus_sequence_lib_pkg.sv(58) @ 0: reporter@@reg_seq [rgu_reset_one_seq] Resetting one register
-# UVM_INFO ../sequences/rgu_bus_sequence_lib_pkg.sv(61) @ 30: reporter@@reg_seq [rgu_reset_one_seq] ...Value 1
-# UVM_INFO ../sequences/rgu_bus_sequence_lib_pkg.sv(63) @ 70: reporter@@reg_seq [rgu_reset_one_seq] read: 0
-# UVM_INFO ../sequences/rgu_bus_sequence_lib_pkg.sv(64) @ 70: reporter@@reg_seq [rgu_reset_one_seq] ...Value 0
-# UVM_INFO ../sequences/rgu_bus_sequence_lib_pkg.sv(65) @ 70: reporter@@reg_seq [rgu_reset_one_seq] Resetting one register done
-# UVM_INFO ../sequences/rgu_test_seq_lib_pkg.sv(95) @ 70: reporter@@t_seq [register_test_one_reg_vseq] REG_SEQUENCE ENDED SANDEEP
-# ** Note: $finish    : ../tb_top/tb_top.sv(46)
-#    Time: 170 ns  Iteration: 0  Instance: /tb_top
-# End time: 13:04:58 on Jul 12,2024, Elapsed time: 0:00:02
+# UVM_INFO @ 0: reporter [RNTST] Running test reg_rw_test...
+# UVM_INFO ../sequences/rgu_test_seq_lib_pkg.sv(161) @ 0: reporter@@t_seq [reg_rw_vseq] Virtual Sequence Started
+# UVM_INFO ../sequences/rgu_bus_sequence_lib_pkg.sv(94) @ 0: reporter@@reg_seq [reg_rw_seq] Sequence Started
+# UVM_INFO ../sequences/rgu_bus_sequence_lib_pkg.sv(96) @ 0: reporter@@reg_seq [reg_rw_seq] Sequence Ended
+# UVM_INFO ../sequences/rgu_test_seq_lib_pkg.sv(163) @ 0: reporter@@t_seq [reg_rw_vseq] Virtual Sequence Ended
+# UVM_INFO verilog_src/uvm-1.1d/src/base/uvm_objection.svh(1267) @ 100: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+# 
+# --- UVM Report Summary ---
+# 
+# ** Report counts by severity
+# UVM_INFO :    8
+# UVM_WARNING :    0
+# UVM_ERROR :    0
+# UVM_FATAL :    0
+# ** Report counts by id
+# [Questa UVM]     2
+# [RNTST]     1
+# [TEST_DONE]     1
+# [reg_rw_seq]     2
+# [reg_rw_vseq]     2
+# ** Note: $finish    : c:/questasim64_10.7c/win64/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
+#    Time: 100 ns  Iteration: 54  Instance: /tb_top
+# End time: 16:59:10 on Jul 12,2024, Elapsed time: 0:00:02
 # Errors: 0, Warnings: 0

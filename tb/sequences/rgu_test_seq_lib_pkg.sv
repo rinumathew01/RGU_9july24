@@ -7,6 +7,7 @@ import uvm_pkg::*;
 import rgu_agent_pkg::*;
 import rgu_env_pkg::*;
 import rgu_bus_sequence_lib_pkg::*;
+import rgu_reg_pkg::*;
 
 // Base class to get sub-sequencer handles
 //
@@ -48,159 +49,120 @@ class rgu_vseq_base extends uvm_sequence #(uvm_sequence_item);
 endclass: rgu_vseq_base
 
 
-//
-// Register test:
-//
-// Checks the reset values
-// Does a randomized read/write bit test using the front door
-// Repeats the read/write bit test using the back door (not necessary, but as an illustration)
-//
-class register_test_vseq extends rgu_vseq_base;
 
-  `uvm_object_utils(register_test_vseq)
 
-  function new(string name = "register_test_vseq");
+
+
+
+
+
+
+
+
+class intf_vseq extends rgu_vseq_base;
+
+  `uvm_object_utils(intf_vseq)
+
+  function new(string name = "intf_vseq");
     super.new(name);
   endfunction
 
   task body;
-    uvm_reg_hw_reset_seq reg_seq = uvm_reg_hw_reset_seq::type_id::create("reg_seq");
-    reg_seq.model = m_cfg.rgu_rb;
-    
-
-    super.body;
-    `uvm_info(get_type_name(),"REG_SEQUENCE STARTED SANDEEP",UVM_MEDIUM);
-    reg_seq.start(m_sequencer);
-    `uvm_info(get_type_name(),"REG_SEQUENCE ENDED SANDEEP",UVM_MEDIUM);
-  endtask: body
-
-endclass: register_test_vseq
-
-class register_test_one_reg_vseq extends rgu_vseq_base;
-
-  `uvm_object_utils(register_test_one_reg_vseq)
-
-  function new(string name = "register_test_one_reg_vseq");
-    super.new(name);
-  endfunction
-
-  task body;
-    rgu_reset_one_seq reg_seq = rgu_reset_one_seq::type_id::create("reg_seq");
+    intf_seq reg_seq = intf_seq::type_id::create("reg_seq");
     // reg_seq.model = m_cfg.rgu_rb;
     rgu_seq_set_cfg(reg_seq);
 
     super.body;
-    `uvm_info(get_type_name(),"REG_SEQUENCE STARTED SANDEEP",UVM_MEDIUM);
+    `uvm_info(get_type_name(),"Virtual Sequence Started",UVM_MEDIUM);
     reg_seq.start(m_sequencer);
-    `uvm_info(get_type_name(),"REG_SEQUENCE ENDED SANDEEP",UVM_MEDIUM);
+    `uvm_info(get_type_name(),"Virtual Sequence Ended",UVM_MEDIUM);
   endtask: body
 
-endclass: register_test_one_reg_vseq
+endclass: intf_vseq
 
 
 
-/*
-//
-// This virtual sequence does rgu transfers with randomized config
-// and tests the interrupt handling
-//
-class config_interrupt_test extends rgu_vseq_base;
 
-  `uvm_object_utils(config_interrupt_test)
 
-  logic[31:0] control;
+class reset_vseq extends rgu_vseq_base;
 
-  function new(string name = "config_interrupt_test");
+  `uvm_object_utils(reset_vseq)
+
+  rgu_reg_block rgu_rb;
+
+  function new(string name = "reset_vseq");
     super.new(name);
   endfunction
 
   task body;
-    // Sequences to be used
-    ctrl_go_seq go = ctrl_go_seq::type_id::create("go");
-    rgu_config_rand_order_seq rgu_config = rgu_config_rand_order_seq::type_id::create("rgu_config");
-    tfer_over_by_poll_seq wait_unload = tfer_over_by_poll_seq::type_id::create("wait_unload");
-    rgu_rand_seq rgu_transfer = rgu_rand_seq::type_id::create("rgu_transfer");
-
-    rgu_seq_set_cfg(go);
-    rgu_seq_set_cfg(rgu_config);
-    rgu_seq_set_cfg(wait_unload);
+    // uvm_reg_hw_reset_seq reg_seq = uvm_reg_hw_reset_seq::type_id::create("reg_seq");
+    // reg_seq.model = m_cfg.rgu_rb;
 
     super.body;
+    // `uvm_info(get_type_name(),"uvm_reg_hw_reset_seq Started",UVM_MEDIUM);
+    // reg_seq.start(m_sequencer);
+    // `uvm_info(get_type_name(),"uvm_reg_hw_reset_seq Ended",UVM_MEDIUM);
 
-    control = 0;
-
-    repeat(10) begin
-      rgu_config.interrupt_enable = 1;
-      rgu_config.start(m_sequencer);
-      control = rgu_config.data;
-      go.start(m_sequencer);
-      fork
-        begin
-          m_cfg.wait_for_interrupt;
-          wait_unload.start(m_sequencer);
-          if(!m_cfg.is_interrupt_cleared()) begin
-            `uvm_error("INT_ERROR", "Interrupt not cleared by register read/write");
-          end
-        end
-        begin
-          rgu_transfer.BITS = control[6:0];
-          rgu_transfer.rx_edge = control[9];
-          rgu_transfer.start(rgu);
-        end
-      join
-    end
+    print_all_values();
   endtask
 
-endclass: config_interrupt_test
 
-//
-// This virtual sequence does rgu transfers with randomized config
-// and polls the go_bsy bit in the control register to determine
-// when the transfer has completed
-//
-class config_polling_test extends rgu_vseq_base;
+  function void print_all_values();
+    uvm_reg_map maps[$];
+    uvm_reg regs[$];
+    uvm_reg_field fields[$];
 
-  `uvm_object_utils(config_polling_test)
+    `uvm_info(get_type_name(),"Printing all the register field values in the reg block",UVM_MEDIUM);
 
-  logic[31:0] control;
+    rgu_rb = m_cfg.rgu_rb;
 
-  function new(string name = "config_polling_test");
+    rgu_rb.get_maps(maps);
+    foreach(maps[i]) begin
+
+      regs.delete();
+      maps[i].get_registers(regs);
+
+      foreach(regs[j]) begin
+
+        regs[j].reset();
+
+        fields.delete();
+        regs[j].get_fields(fields);
+        $display("%s:",regs[j].get_name);
+
+        foreach(fields[k]) begin
+          $display("%s: %0h",fields[k].get_name,fields[k].get());
+        end
+        $display();
+      end
+      $display();
+    end
+  endfunction
+
+endclass: reset_vseq
+
+
+
+
+class reg_rw_vseq extends rgu_vseq_base;
+
+  `uvm_object_utils(reg_rw_vseq)
+
+  function new(string name = "reg_rw_vseq");
     super.new(name);
   endfunction
 
   task body;
-    // Sequences to be used
-    ctrl_go_seq go = ctrl_go_seq::type_id::create("go");
-    rgu_config_rand_order_seq rgu_config = rgu_config_rand_order_seq::type_id::create("rgu_config");
-    tfer_over_by_poll_seq wait_unload = tfer_over_by_poll_seq::type_id::create("wait_unload");
-    rgu_rand_seq rgu_transfer = rgu_rand_seq::type_id::create("rgu_transfer");
-
-    rgu_seq_set_cfg(go);
-    rgu_seq_set_cfg(rgu_config);
-    rgu_seq_set_cfg(wait_unload);
+    reg_rw_seq reg_seq = reg_rw_seq::type_id::create("reg_seq");
+    // reg_seq.model = m_cfg.rgu_rb;
+    rgu_seq_set_cfg(reg_seq);
 
     super.body;
+    `uvm_info(get_type_name(),"Virtual Sequence Started",UVM_MEDIUM);
+    reg_seq.start(m_sequencer);
+    `uvm_info(get_type_name(),"Virtual Sequence Ended",UVM_MEDIUM);
+  endtask: body
 
-    control = 0;
+endclass: reg_rw_vseq
 
-    repeat(10) begin
-      rgu_config.interrupt_enable = 1;
-      rgu_config.start(m_sequencer);
-      control = rgu_config.data;
-      go.start(m_sequencer);
-      fork
-        begin
-          wait_unload.start(m_sequencer);
-        end
-        begin
-          rgu_transfer.BITS = control[6:0];
-          rgu_transfer.rx_edge = control[9];
-          rgu_transfer.start(rgu);
-        end
-      join
-    end
-  endtask
-
-endclass: config_polling_test
-*/
 endpackage:rgu_test_seq_lib_pkg
