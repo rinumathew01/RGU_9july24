@@ -46,23 +46,54 @@ class rgu_bus_base_seq extends uvm_sequence #(uvm_sequence_item);
 endclass: rgu_bus_base_seq
 
 
-class rgu_reset_one_seq extends rgu_bus_base_seq;
-  `uvm_object_utils(rgu_reset_one_seq);
 
-  function new(string name = "rgu_reset_one_seq");
+
+
+
+
+class intf_seq extends rgu_bus_base_seq;
+  `uvm_object_utils(intf_seq);
+
+  function new(string name = "intf_seq");
     super.new(name);
   endfunction
 
   task body;
     super.body;
-    `uvm_info(get_type_name(),"Resetting one register",UVM_MEDIUM);
-    rgu_rb.RGU_TIMER0.reset();
-    rgu_rb.RGU_TIMER0.write(status,1);
-    `uvm_info(get_type_name(),$sformatf("...Value %0d",rgu_rb.RGU_TIMER0.TIM0_VAL.value),UVM_MEDIUM)
+    `uvm_info(get_type_name(),"Sequence Started",UVM_MEDIUM);
+
+    `uvm_info(get_type_name(),"Writing into RGU_TIMER0",UVM_MEDIUM)
+    rgu_rb.RGU_TIMER0.write(status,$random);
+    `uvm_info(get_type_name(),$sformatf("Desired value in regmodel %0d",rgu_rb.RGU_TIMER0.TIM0_VAL.value),UVM_MEDIUM)
+    `uvm_info(get_type_name(),$sformatf("Mirrored value in regmodel %0d",rgu_rb.RGU_TIMER0.get_mirrored_value()),UVM_MEDIUM)
+    `uvm_info(get_type_name(),"Writing end",UVM_MEDIUM)
+
+    `uvm_info(get_type_name(),"Reading from RGU_TIMER0",UVM_MEDIUM)
     rgu_rb.RGU_TIMER0.read(status,data);
-    `uvm_info(get_type_name(),$sformatf("read: %0d",data),UVM_MEDIUM);
-    `uvm_info(get_type_name(),$sformatf("...Value %0d",rgu_rb.RGU_TIMER0.TIM0_VAL.value),UVM_MEDIUM)
-    `uvm_info(get_type_name(),"Resetting one register done",UVM_MEDIUM);
+    `uvm_info(get_type_name(),$sformatf("Desired value in regmodel %0d",rgu_rb.RGU_TIMER0.TIM0_VAL.value),UVM_MEDIUM)
+    `uvm_info(get_type_name(),$sformatf("Mirrored value in regmodel %0d",rgu_rb.RGU_TIMER0.get_mirrored_value()),UVM_MEDIUM)
+    `uvm_info(get_type_name(),"Reading end",UVM_MEDIUM)
+
+    `uvm_info(get_type_name(),"Sequence Ended",UVM_MEDIUM);
+
+  endtask
+
+endclass
+
+
+
+class reg_rw_seq extends rgu_bus_base_seq;
+  `uvm_object_utils(reg_rw_seq);
+
+  function new(string name = "reg_rw_seq");
+    super.new(name);
+  endfunction
+
+  task body;
+    super.body;
+    `uvm_info(get_type_name(),"Sequence Started",UVM_MEDIUM);
+
+    `uvm_info(get_type_name(),"Sequence Ended",UVM_MEDIUM);
   endtask
 endclass
 

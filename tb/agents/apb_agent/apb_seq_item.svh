@@ -25,6 +25,10 @@ constraint delay_bounds {
   delay inside {[1:16]};
 }
 
+constraint delay_default {
+  soft delay == 1;
+}
+
 //------------------------------------------
 // Methods
 //------------------------------------------

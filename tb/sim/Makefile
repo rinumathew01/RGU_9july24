@@ -49,6 +49,10 @@ run:
 run_wave:
 	vsim tb_top +UVM_TESTNAME="$(TESTNAME)"
 	
+run_all_tests:
+	vsim -c -do "run -all" tb_top +UVM_TESTNAME=intf_test
+	vsim -c -do "run -all" tb_top +UVM_TESTNAME=reset_test
+	vsim -c -do "run -all" tb_top +UVM_TESTNAME=reg_rw_test
 
 clean:
 	rm -rf work vsim.wlf

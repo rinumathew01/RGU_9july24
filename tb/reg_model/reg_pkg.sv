@@ -1299,7 +1299,7 @@ package rgu_reg_pkg;
 
       PWM_SWRST.configure(
         .parent                 ( this ),
-        .size                   ( 2 ),
+        .size                   ( 3 ),
         .lsb_pos                ( 0 ),
         .access                 ( "RW" ),
         .volatile               ( 0 ),

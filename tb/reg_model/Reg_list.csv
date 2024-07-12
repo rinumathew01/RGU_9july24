@@ -60,7 +60,7 @@ RGU_LLC_SWRST,58,32,UVM_NO_COVERAGE,,,,,,,,,,Main system CPU cluster LLC softwar
 RGU_CPU_SWRST,5c,32,UVM_NO_COVERAGE,,,,,,,,,,Main system CPU cluster software reset register
 ,,,,CPU_SWRST,8,0,RW,0,ff,1,1,1,Main system CPU cluster software reset
 RGU_PWM_SWRST,60,32,UVM_NO_COVERAGE,,,,,,,,,,Main system PWM software reset register
-,,,,PWM_SWRST,2,0,RW,0,7,1,1,1,Main system PWM software reset
+,,,,PWM_SWRST,3,0,RW,0,7,1,1,1,Main system PWM software reset
 RGU_CPU_PWRUP_SWRST,64,32,UVM_NO_COVERAGE,,,,,,,,,,Main system CPU Power-up reset register
 ,,,,CPU_PWRUP_SWRST,1,0,RW,0,1,1,1,1,Main system CPU Power-up reset (cluster-wide)
 RGU_CPU_PWRUP_HEAVY_SWRST,68,32,UVM_NO_COVERAGE,,,,,,,,,,Main system CPU Power-up reset register

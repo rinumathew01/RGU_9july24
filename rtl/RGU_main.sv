@@ -19,7 +19,7 @@ module RGU(
     output reg PSLVERR,
 
     output reg rst_sb_sys_n,
-    output reg rst_sb_dmac_n,
+    output reg rst_sb_dmac_n, 
     output reg rst_sb_qspi_n,
     output reg rst_sb_i2c_n,
     output reg rst_sb_uart_n,
