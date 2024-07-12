@@ -55,10 +55,10 @@ function void rgu_test_base::build_phase(uvm_phase phase);
   m_env_cfg.m_apb_agent_cfg = m_apb_cfg;
   // The rgu is not configured as such
   m_rgu_cfg = rgu_agent_config::type_id::create("m_rgu_cfg");
-  if (!uvm_config_db #(virtual rgu_monitor_bfm)::get(this, "", "rgu_mon_bfm", m_rgu_cfg.mon_bfm))
-    `uvm_fatal("VIF CONFIG", "Cannot get() BFM interface rgu_mon_bfm from uvm_config_db. Have you set() it?")
-  if (!uvm_config_db #(virtual rgu_driver_bfm) ::get(this, "", "rgu_drv_bfm", m_rgu_cfg.drv_bfm))
-    `uvm_fatal("VIF CONFIG", "Cannot get() BFM interface rgu_drv_bfm from uvm_config_db. Have you set() it?")
+  // if (!uvm_config_db #(virtual rgu_monitor_bfm)::get(this, "", "rgu_mon_bfm", m_rgu_cfg.mon_bfm))
+  //   `uvm_fatal("VIF CONFIG", "Cannot get() BFM interface rgu_mon_bfm from uvm_config_db. Have you set() it?")
+  // if (!uvm_config_db #(virtual rgu_driver_bfm) ::get(this, "", "rgu_drv_bfm", m_rgu_cfg.drv_bfm))
+  //   `uvm_fatal("VIF CONFIG", "Cannot get() BFM interface rgu_drv_bfm from uvm_config_db. Have you set() it?")
   m_rgu_cfg.has_functional_coverage = 0;
   m_env_cfg.m_rgu_agent_cfg = m_rgu_cfg;
   
@@ -83,10 +83,12 @@ endfunction: configure_apb_agent
 function void rgu_test_base::set_seqs(rgu_vseq_base seq);
   seq.m_cfg = m_env_cfg;
 
-  seq.apb = m_env.m_apb_agent.m_sequencer;
-//   seq.rgu = m_env.m_rgu_agent.m_sequencer;
+  // seq.apb = m_env.m_apb_agent.m_sequencer;
+  seq.rgu = m_env.m_rgu_agent.m_sequencer;
 endfunction
 
 task rgu_test_base::run_phase(uvm_phase phase);
   `uvm_info(get_type_name(),"Hey boss",UVM_MEDIUM);
+  uvm_top.print_topology();
+  rgu_rb.print();
 endtask

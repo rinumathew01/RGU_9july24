@@ -1564,7 +1564,7 @@ package rgu_reg_pkg;
       RGU_CPU_PWRUP_HEAVY_SWRST.build();
       RGU_CPU_PWRUP_HEAVY_SWRST.configure(this);
       
-      default_map = create_map("default_map", 0, 8, UVM_LITTLE_ENDIAN); // instance, base_addr, size in byte, endian
+      default_map = create_map("default_map", 0, 32, UVM_LITTLE_ENDIAN); // instance, base_addr, size in byte, endian
       default_map.add_reg(RGU_GLB, 'h0, "RW"); // instance, offset , access
       default_map.add_reg(RGU_RST_STATUS, 'h4, "RW"); // instance, offset , access
       default_map.add_reg(RGU_TIMER0, 'h8, "RW"); // instance, offset , access

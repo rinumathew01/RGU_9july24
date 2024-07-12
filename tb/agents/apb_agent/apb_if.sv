@@ -8,7 +8,7 @@ interface apb_if(input PCLK,
   logic[15:0] PSEL; // Only connect the ones that are needed
   logic PENABLE;
   logic PWRITE;
-  logic PREADY;
+  logic PREADY = 1'b1;
 
   property psel_valid;
     @(posedge PCLK) disable iff (PRESETn == 1'b0)
