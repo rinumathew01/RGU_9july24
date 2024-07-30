@@ -52,6 +52,10 @@ module RGU(
 );
 
 `include "registers_rgu.sv"
+reg stage0_done;
+reg stage1_done;
+reg [31:0] tim0;
+reg [31:0] tim1;
 
 always_ff @(posedge PCLK or negedge PRESETn)
 
@@ -74,7 +78,7 @@ always_ff @(posedge clk)
             if(PWRITE)
                 case(PADDR);
                 12'h000: RGU_GLB <= PWDATA;
-                12'h004: RGU_RST_STATUS <= PWDATA;
+                //12'h004: RGU_RST_STATUS <= PWDATA;
                 12'h008: RGU_TIMER0 <= PWDATA;
                 12'h00C: RGU_TIMER1 <= PWDATA;
                 12'h010: RGU_SB_SWRST <= PWDATA;
@@ -139,44 +143,45 @@ always_ff @(posedge clk)
                 endcase
 
 
-    // if(!sys_pwrgd)
-    //     begin
-    //          rst_sb_sys_n <= 0;
-    //          rst_sb_dmac_n <= 0;
-    //          rst_sb_qspi_n <= 0;
-    //          rst_sb_i2c_n <= 0;
-    //          rst_sb_uart_n <= 0;
-    //          rst_sb_gpio_n <= 0;
-    //          rst_sb_sram_n <= 0;
-    //          rst_sb_wdt_n <= 0;
-    //          rst_sb_cpu_n <= 0;
-    //          rst_sys_n <= 0;
-    //          rst_wdt_n <= 0;
-    //          rst_gpt_n <= 0;
-    //          rst_sram_n <= 0;
-    //          rst_ddr_n <= 0;
-    //          rst_usb_n <= 0;
-    //          rst_mmc_n <= 0;
-    //          rst_dmac_n <= 0;
-    //          rst_qspi_n <= 0;
-    //          rst_spi_n <= 0;
-    //          rst_i2c_n <= 0;
-    //          rst_uart_n <= 0;
-    //          rst_gpio_n <= 0;
-    //          rst_pwm_n <= 0;
-    //          rst_i2s_n <= 0;
-    //          rst_gpu_n <= 0;
-    //          rst_videc_n <= 0;
-    //          rst_vicod_n <= 0;
-    //          rst_camera_n <= 0;
-    //          rst_display_n <= 0;
-    //          rst_llc_n <= 0;
-    //          rst_cpu_n <= 0;
-    //          rst_cpu_pwrup_n <= 0;
-    //          rst_cpu_pwrup_heavy_n <= 0;
-    //     end
-    // else
-    always_ff @(posedge clk)
+    
+    always_ff @(posedge clk or negedge sys_pwrgd)
+    if(!sys_pwrgd || !sys_reset_n)
+        begin
+             rst_sb_sys_n <= 0;
+             rst_sb_dmac_n <= 0;
+             rst_sb_qspi_n <= 0;
+             rst_sb_i2c_n <= 0;
+             rst_sb_uart_n <= 0;
+             rst_sb_gpio_n <= 0;
+             rst_sb_sram_n <= 0;
+             rst_sb_wdt_n <= 0;
+             rst_sb_cpu_n <= 0;
+             rst_sys_n <= 0;
+             rst_wdt_n <= 0;
+             rst_gpt_n <= 0;
+             rst_sram_n <= 0;
+             rst_ddr_n <= 0;
+             rst_usb_n <= 0;
+             rst_mmc_n <= 0;
+             rst_dmac_n <= 0;
+             rst_qspi_n <= 0;
+             rst_spi_n <= 0;
+             rst_i2c_n <= 0;
+             rst_uart_n <= 0;
+             rst_gpio_n <= 0;
+             rst_pwm_n <= 0;
+             rst_i2s_n <= 0;
+             rst_gpu_n <= 0;
+             rst_videc_n <= 0;
+             rst_vicod_n <= 0;
+             rst_camera_n <= 0;
+             rst_display_n <= 0;
+             rst_llc_n <= 0;
+             rst_cpu_n <= 0;
+             rst_cpu_pwrup_n <= 0;
+             rst_cpu_pwrup_heavy_n <= 0;
+        end
+    else
         begin
              rst_sb_sys_n <= stage0_done;
              rst_sb_dmac_n <= stage0_done & ~SB_DMAC_SWRST;
@@ -217,13 +222,69 @@ always_ff @(posedge clk)
 
 //......................................................................................
 //.........................debounce circuit.........................................
-    reg [2:0] count_sys_reset_n;
+  /*  reg [2:0] count_sys_reset_n;
     wire debounce_out;
     assign debounce_out = (count>=5)? 0 : 1;
     always_ff @(posedge clk or negedge sys_pwrgd)
-        if(!sys_pwrgd 0 || sys_reset_n)
+        if(!sys_pwrgd || sys_reset_n)
             count_sys_reset_n<=0;
         else 
-            count_sys_reset_n <= out? count_sys_reset_n+1 : 0;
+            count_sys_reset_n <= debounce_out? count_sys_reset_n+1 : 0;
+*/
+
+    reg [3:0] shift_sys_reset_n;
+    wire debounce_out;
+    assign debounce_out = |shift_sys_reset_n;
+    always_ff @(posedge clk or negedge sys_pwrgd)
+        if(!sys_pwrgd)
+           shift_sys_reset_n <= 4'b1111;
+        else 
+            shift_sys_reset_n <= {sys_reset_n , shift_sys_reset_n[3:1]};
 //.........................................................................................
+
+//............................reset synchronizer............................................
+
+reg [1:0]sys_pwrgd_sync_reg;
+reg sys_reset_n_sync_reg;
+wire sys_pwrgd_sync;
+wire sys_reset_n_sync;
+
+assign sys_pwrgd_sync = sys_pwrgd_sync_reg[0];
+assign sys_reset_n_sync = sys_pwrgd_sync_reg;
+
+always_ff @(posedge clk)
+begin
+    sys_pwrgd_sync_reg <= {sys_pwrgd,sys_pwrgd_sync_reg[1]};
+    sys_reset_n_sync_reg <= sys_reset_n;
+end
+
+//...........................................................................................
+
+
+//...........................reset generation logic...............................................
+
+always_ff @(posedge clk or negedge sys_pwrgd)
+    if(!sys_pwrgd)
+        begin
+            stage0_done <= 0;
+            stage1_done <= 0;
+            tim0        <= 0;
+            tim1        <= 0;
+            RGU_RST_STATUS <= 32'b1;
+            `RESET_REGS
+        end
+    else
+        begin
+            if(!debounce_out)
+            begin
+                stage0_done<=0;
+                stage1_done<=0;
+                tim0        <= 0;
+                tim1        <= 0;
+                RGU_RST_STATUS <= 32'b10;
+                `RESET_REGS
+            end
+            
+
+
 endmodule 

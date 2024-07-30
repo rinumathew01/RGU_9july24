@@ -4,6 +4,7 @@ interface rgu_intf;
     logic sys_reset_n;
     logic sb_wdt_rst_n;
     logic [3:0] wdt_rst_n;
+    
     logic rst_sb_sys_n;
     logic rst_sb_dmac_n;
     logic rst_sb_qspi_n;
